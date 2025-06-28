@@ -3,74 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Countdown to July 1, 2025 – 2:30 AM</title>
+  <title>Ayanokoji Countdown</title>
   <style>
     body {
-      background-color: #0d1117;
-      color: #f0f6fc;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      background: radial-gradient(circle at center, #000000 0%, #0a0a0a 100%);
+      color: #00ffcc;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
       height: 100vh;
-      margin: 0;
-      text-align: center;
+      overflow: hidden;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+      font-size: 2em;
+      color: #ff0077;
+      text-shadow: 0 0 10px #ff0077aa;
+      margin-bottom: 30px;
     }
 
     #countdown {
-      font-size: 2em;
-      background: #161b22;
-      padding: 20px 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(240, 246, 252, 0.1);
-    }
-
-    .label {
-      font-size: 0.7em;
-      opacity: 0.7;
+      font-size: 4em;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #00ffccaa;
+      animation: pulse 1.5s infinite;
     }
 
     footer {
       position: absolute;
-      bottom: 15px;
+      bottom: 20px;
       font-size: 0.9em;
-      color: #8b949e;
+      color: #666;
+      text-shadow: 0 0 5px #222;
+    }
+
+    @keyframes pulse {
+      0% { text-shadow: 0 0 10px #00ffccaa; }
+      50% { text-shadow: 0 0 30px #00ffcc; }
+      100% { text-shadow: 0 0 10px #00ffccaa; }
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+    }
+
+    .glitch::before, .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+      color: #ff0077;
+      z-index: -1;
+    }
+
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 magenta;
+      animation: glitch-anim 1.5s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      left: -2px;
+      text-shadow: -2px 0 cyan;
+      animation: glitch-anim2 1.2s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(0, 9999px, 0, 0); }
+      5% { clip: rect(0, 9999px, 100%, 0); }
+      10% { clip: rect(0, 9999px, 0, 0); }
+      15% { clip: rect(0, 9999px, 100%, 0); }
+      20%, 100% { clip: rect(0, 9999px, 0, 0); }
+    }
+
+    @keyframes glitch-anim2 {
+      0%, 20%, 100% { clip: rect(0, 9999px, 0, 0); }
+      10% { clip: rect(0, 9999px, 100%, 0); }
+      15% { clip: rect(0, 9999px, 0, 0); }
     }
   </style>
 </head>
 <body>
-  <h1>Countdown to July 1, 2025 – 2:30 AM</h1>
+  <h1 class="glitch" data-text="OPERATION: A-VOID">OPERATION: A-VOID</h1>
   <div id="countdown">Loading...</div>
-
-  <footer>Stay 10 steps ahead — Ayanokoji Mode</footer>
+  <footer>Stay 10 steps ahead – Calm is control.</footer>
 
   <script>
     const countdown = document.getElementById("countdown");
 
     function updateCountdown() {
-      const targetDate = new Date("2025-07-01T02:30:00+05:30").getTime();
+      const targetTime = new Date("2025-07-01T02:30:00+05:30").getTime();
       const now = new Date().getTime();
-      const distance = targetDate - now;
+      const timeLeft = targetTime - now;
 
-      if (distance <= 0) {
-        countdown.innerHTML = "Time Reached. Execute the Plan.";
+      if (timeLeft <= 0) {
+        countdown.innerHTML = "00.00 Hours Left";
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const hoursLeft = timeLeft / (1000 * 60 * 60);
+      const formatted = hoursLeft.toFixed(2).padStart(5, '0');
 
-      countdown.innerHTML = `
-        ${days}d ${hours}h ${minutes}m ${seconds}s
-      `;
+      countdown.innerHTML = `${formatted} Hours Left`;
     }
 
     updateCountdown();
