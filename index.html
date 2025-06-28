@@ -50,7 +50,6 @@
       margin-top: 20px;
       font-size: 4vw;
       color: #888;
-      animation: flash 2s steps(1) infinite;
       min-height: 30px;
       z-index: 1;
     }
@@ -67,12 +66,6 @@
     @keyframes pulse {
       0%, 100% { text-shadow: 0 0 10px #00ffcc; }
       50% { text-shadow: 0 0 25px #00ffcc; }
-    }
-
-    @keyframes flash {
-      0% { opacity: 1; }
-      50% { opacity: 0.1; }
-      100% { opacity: 1; }
     }
 
     @media (max-width: 500px) {
@@ -117,7 +110,7 @@
 
       if (diff <= 0) {
         countdown.textContent = "00.00 Hours Left";
-        flasher.textContent = "Hackothon complete. Go touch grass 🌱";
+        typeText("Hackothon complete. Go touch grass 🌱");
         return;
       }
 
@@ -125,17 +118,41 @@
       countdown.textContent = `${hours} Hours Left`;
     }
 
-    function updateFlasher() {
-      const random = phrases[Math.floor(Math.random() * phrases.length)];
-      flasher.textContent = random;
+    // Terminal Typing Effect
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let currentPhrase = phrases[0];
+
+    function typeText(overrideText = null) {
+      currentPhrase = overrideText || phrases[phraseIndex];
+      const visibleText = currentPhrase.substring(0, charIndex);
+      flasher.textContent = visibleText;
+
+      if (!isDeleting && charIndex < currentPhrase.length) {
+        charIndex++;
+        setTimeout(() => typeText(overrideText), 50);
+      } else if (isDeleting && charIndex > 0) {
+        charIndex--;
+        setTimeout(() => typeText(overrideText), 25);
+      } else {
+        if (!isDeleting) {
+          isDeleting = true;
+          setTimeout(() => typeText(overrideText), 1000);
+        } else {
+          isDeleting = false;
+          charIndex = 0;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          setTimeout(() => typeText(), 500);
+        }
+      }
     }
 
     updateCountdown();
-    updateFlasher();
+    typeText();
     setInterval(updateCountdown, 1000);
-    setInterval(updateFlasher, 3000);
 
-    // Matrix ASCII Canvas Animation
+    // Matrix-style ASCII Background
     const canvas = document.getElementById("matrixCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -177,71 +194,5 @@
 
     drawMatrix();
   </script>
-  <script>
-  const countdown = document.getElementById("countdown");
-  const flasher = document.getElementById("flasher");
-
-  const phrases = [
-    "Compiling memes...",
-    "Encrypting caffeine...",
-    "Deploying chaos.exe",
-    "Overclocking brain...",
-    "Git push --force 😈",
-    "Debugger summoned!",
-    "JavaScript is crying...",
-    "Opening Stack Overflow...",
-    "404: Sleep not found.",
-    "Hackerman mode activated!"
-  ];
-
-  function updateCountdown() {
-    const target = new Date("2025-07-01T02:30:00+05:30").getTime();
-    const now = new Date().getTime();
-    const diff = target - now;
-
-    if (diff <= 0) {
-      countdown.textContent = "00.00 Hours Left";
-      typeText("Hackothon complete. Go touch grass 🌱");
-      return;
-    }
-
-    const hours = (diff / (1000 * 60 * 60)).toFixed(2).padStart(5, '0');
-    countdown.textContent = `${hours} Hours Left`;
-  }
-
-  // Terminal Typing Effect
-  let phraseIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-
-  function typeText(overrideText = null) {
-    const currentPhrase = overrideText || phrases[phraseIndex];
-    const visibleText = currentPhrase.substring(0, charIndex);
-    flasher.textContent = visibleText;
-
-    if (!isDeleting && charIndex < currentPhrase.length) {
-      charIndex++;
-      setTimeout(() => typeText(overrideText), 50);
-    } else if (isDeleting && charIndex > 0) {
-      charIndex--;
-      setTimeout(() => typeText(overrideText), 25);
-    } else {
-      if (!isDeleting) {
-        isDeleting = true;
-        setTimeout(() => typeText(overrideText), 1000); // pause before delete
-      } else {
-        isDeleting = false;
-        charIndex = 0;
-        phraseIndex = (phraseIndex + 1) % phrases.length;
-        setTimeout(() => typeText(), 500); // next phrase
-      }
-    }
-  }
-
-  // Init
-  updateCountdown();
-  typeText();
-  setInterval(updateCountdown, 1000);
-</script>
 </body>
 </html>
