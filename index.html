@@ -21,30 +21,30 @@
     }
 
     h1 {
-      font-size: 6vw;
+      font-size: 5vw;
       color: #ff0055;
       text-shadow: 0 0 10px #ff0055aa;
       margin-bottom: 20px;
     }
 
     #countdown {
-      font-size: 10vw;
+      font-size: 8vw;
       color: #00ffcc;
-      text-shadow: 0 0 20px #00ffcc88;
+      text-shadow: 0 0 15px #00ffcc88;
       animation: pulse 1.5s infinite;
     }
 
     .flasher {
       margin-top: 20px;
-      font-size: 5vw;
+      font-size: 4vw;
       color: #888;
       animation: flash 2s steps(1) infinite;
-      min-height: 30px;
+      min-height: 28px;
     }
 
     @keyframes pulse {
       0%, 100% { text-shadow: 0 0 10px #00ffcc; }
-      50% { text-shadow: 0 0 30px #00ffcc; }
+      50% { text-shadow: 0 0 25px #00ffcc; }
     }
 
     @keyframes flash {
@@ -62,9 +62,9 @@
     }
 
     @media (max-width: 500px) {
-      h1 { font-size: 8vw; }
-      #countdown { font-size: 12vw; }
-      .flasher { font-size: 6vw; }
+      h1 { font-size: 7vw; }
+      #countdown { font-size: 10vw; }
+      .flasher { font-size: 5vw; }
       footer { font-size: 4vw; }
     }
   </style>
@@ -82,15 +82,15 @@
 
     const phrases = [
       "Compiling memes...",
-      "Encrypting coffee...",
+      "Encrypting caffeine...",
       "Deploying chaos.exe",
       "Overclocking brain...",
       "Git push --force 😈",
       "Debugger summoned!",
-      "Respawning energy...",
-      "JavaScript is sentient!",
-      "Opening stackoverflow...",
-      "404 sleep not found"
+      "JavaScript is crying...",
+      "Opening Stack Overflow...",
+      "404: Sleep not found.",
+      "Hackerman mode activated!"
     ];
 
     function updateCountdown() {
@@ -100,7 +100,7 @@
 
       if (diff <= 0) {
         countdown.textContent = "00.00 Hours Left";
-        flasher.textContent = "Hackothon complete. Go touch grass.";
+        flasher.textContent = "Hackothon complete. Time to touch grass.";
         return;
       }
 
