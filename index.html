@@ -3,118 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ayanokoji Countdown</title>
+  <title>Hackothon Countdown</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Courier New', monospace;
-      background: radial-gradient(circle at center, #000000 0%, #0a0a0a 100%);
-      color: #00ffcc;
+      background: #000;
+      color: #00ff99;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      height: 100vh;
+      text-align: center;
+      min-height: 100vh;
       overflow: hidden;
     }
 
     h1 {
-      font-size: 2em;
-      color: #ff0077;
-      text-shadow: 0 0 10px #ff0077aa;
-      margin-bottom: 30px;
+      font-size: 6vw;
+      color: #ff0055;
+      text-shadow: 0 0 10px #ff0055aa;
+      margin-bottom: 20px;
     }
 
     #countdown {
-      font-size: 4em;
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px #00ffccaa;
+      font-size: 10vw;
+      color: #00ffcc;
+      text-shadow: 0 0 20px #00ffcc88;
       animation: pulse 1.5s infinite;
+    }
+
+    .flasher {
+      margin-top: 20px;
+      font-size: 5vw;
+      color: #888;
+      animation: flash 2s steps(1) infinite;
+      min-height: 30px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 10px #00ffcc; }
+      50% { text-shadow: 0 0 30px #00ffcc; }
+    }
+
+    @keyframes flash {
+      0% { opacity: 1; }
+      50% { opacity: 0.1; }
+      100% { opacity: 1; }
     }
 
     footer {
       position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
+      bottom: 15px;
+      font-size: 3vw;
       color: #666;
-      text-shadow: 0 0 5px #222;
+      text-shadow: 0 0 5px #111;
     }
 
-    @keyframes pulse {
-      0% { text-shadow: 0 0 10px #00ffccaa; }
-      50% { text-shadow: 0 0 30px #00ffcc; }
-      100% { text-shadow: 0 0 10px #00ffccaa; }
-    }
-
-    .glitch {
-      position: relative;
-      display: inline-block;
-    }
-
-    .glitch::before, .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      color: #ff0077;
-      z-index: -1;
-    }
-
-    .glitch::before {
-      left: 2px;
-      text-shadow: -2px 0 magenta;
-      animation: glitch-anim 1.5s infinite linear alternate-reverse;
-    }
-
-    .glitch::after {
-      left: -2px;
-      text-shadow: -2px 0 cyan;
-      animation: glitch-anim2 1.2s infinite linear alternate-reverse;
-    }
-
-    @keyframes glitch-anim {
-      0% { clip: rect(0, 9999px, 0, 0); }
-      5% { clip: rect(0, 9999px, 100%, 0); }
-      10% { clip: rect(0, 9999px, 0, 0); }
-      15% { clip: rect(0, 9999px, 100%, 0); }
-      20%, 100% { clip: rect(0, 9999px, 0, 0); }
-    }
-
-    @keyframes glitch-anim2 {
-      0%, 20%, 100% { clip: rect(0, 9999px, 0, 0); }
-      10% { clip: rect(0, 9999px, 100%, 0); }
-      15% { clip: rect(0, 9999px, 0, 0); }
+    @media (max-width: 500px) {
+      h1 { font-size: 8vw; }
+      #countdown { font-size: 12vw; }
+      .flasher { font-size: 6vw; }
+      footer { font-size: 4vw; }
     }
   </style>
 </head>
 <body>
-  <h1 class="glitch" data-text="OPERATION: A-VOID">OPERATION: A-VOID</h1>
+
+  <h1>HACKOTHON FINAL COUNTDOWN</h1>
   <div id="countdown">Loading...</div>
-  <footer>Stay 10 steps ahead – Calm is control.</footer>
+  <div class="flasher" id="flasher">Initiating nonsense...</div>
+  <footer>Only caffeine can save you now ☕</footer>
 
   <script>
     const countdown = document.getElementById("countdown");
+    const flasher = document.getElementById("flasher");
+
+    const phrases = [
+      "Compiling memes...",
+      "Encrypting coffee...",
+      "Deploying chaos.exe",
+      "Overclocking brain...",
+      "Git push --force 😈",
+      "Debugger summoned!",
+      "Respawning energy...",
+      "JavaScript is sentient!",
+      "Opening stackoverflow...",
+      "404 sleep not found"
+    ];
 
     function updateCountdown() {
-      const targetTime = new Date("2025-07-01T02:30:00+05:30").getTime();
+      const target = new Date("2025-07-01T02:30:00+05:30").getTime();
       const now = new Date().getTime();
-      const timeLeft = targetTime - now;
+      const diff = target - now;
 
-      if (timeLeft <= 0) {
-        countdown.innerHTML = "00.00 Hours Left";
+      if (diff <= 0) {
+        countdown.textContent = "00.00 Hours Left";
+        flasher.textContent = "Hackothon complete. Go touch grass.";
         return;
       }
 
-      const hoursLeft = timeLeft / (1000 * 60 * 60);
-      const formatted = hoursLeft.toFixed(2).padStart(5, '0');
+      const hours = (diff / (1000 * 60 * 60)).toFixed(2).padStart(5, '0');
+      countdown.textContent = `${hours} Hours Left`;
+    }
 
-      countdown.innerHTML = `${formatted} Hours Left`;
+    function updateFlasher() {
+      const random = phrases[Math.floor(Math.random() * phrases.length)];
+      flasher.textContent = random;
     }
 
     updateCountdown();
+    updateFlasher();
     setInterval(updateCountdown, 1000);
+    setInterval(updateFlasher, 3000);
   </script>
 </body>
 </html>
